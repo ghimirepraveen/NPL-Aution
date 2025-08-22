@@ -1,0 +1,17 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: tmaier/docker-compose:latest
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - apk update && apk add sshpass
+    - sshpass -V
+    - export SSHPASS=$PASS
+    - ls -la
+  script:
+    - sshpass -e ssh -o stricthostkeychecking=no  $USER@$DEPLOY_SERVER 'cd redis-be && git stash  && git pull  && docker compose up --build --force-recreate -d && docker system prune --all -f'
+  only:
+    - deploy

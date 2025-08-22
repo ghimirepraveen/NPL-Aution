@@ -1,0 +1,12 @@
+/node_modules 
+/uploads 
+/build
+.env
+.env.swp
+.vscode
+package-lock.json
+/logs
+*.log
+#logo.png 
+qr.png
+.DS_Store 

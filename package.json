@@ -1,0 +1,27 @@
+{
+  "name": "redis-platform",
+  "version": "1.0.0",
+  "description": "Redis-based platform with caching capabilities",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file .env index.js",
+    "dev": "node --watch --env-file .env index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.456.0",
+    "@aws-sdk/s3-request-presigner": "^3.787.0",
+    "express": "^4.18.2",
+    "hbs": "^4.2.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.1",
+    "nodemailer": "^6.9.7",
+    "redis": "^5.8.1"
+  },
+  "devDependencies": {
+    "express-jsdoc-swagger": "^1.8.0",
+    "morgan": "^1.10.0"
+  }
+}
