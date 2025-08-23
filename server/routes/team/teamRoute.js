@@ -1,48 +1,21 @@
 const router = require("express").Router();
 const { Auth } = require("../../middlewares/Auth");
-const adminCtrl = require("../../controllers/admin/adminController");
+const teamCtrl = require("../../controllers/team/teamController");
 const validator = require("../../validation/validator");
 const commonSchema = require("../../validation/schema/commonSchema");
-
+const teamSchema = require("../../validation/schema/teamSchema");
 const { checkPermission } = require("../../middlewares/Guard");
-
-/**
- * Error Response
- * @typedef {object} ErrorResponse
- * @property {string} title - title
- * @property {string} message - message
- */
-
-/**
- * Success Object Response
- * @typedef {object} SuccessObjectResponse
- * @property {string} title - title
- * @property {string} message - message
- * @property {object} data
- */
-/**
- * Success Array Response
- * @typedef {object} SuccessArrayResponse
- * @property {string} title - title
- * @property {string} message - message
- * @property {array<object>} data
- */
 
 router
   .route("/changestatus/:id")
 
   /**
-   * @typedef {object} ChangeStatusRequest
-   * @property {string} status.required - status
-   */
-
-  /**
-   * PUT /admin/changestatus/{id}
-   * @tags ADMINs
+   * PUT /team/changestatus/{id}
+   * @tags TEAMs
    * @security JWT
    * @summary Change Status
    * @param {string} id.path - id (5e2583b17e234e3352723427)
-   * @param {ChangeStatusRequest} request.body.required - status
+   * @param {object} request.body.required - status
    * @return {SuccessObjectResponse} 200 - Success
    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
    * @example request - example payload
@@ -56,18 +29,18 @@ router
     validator.validateRequestParams(commonSchema.idSchema, "Update"),
     validator.validateRequestBody(commonSchema.changeStatusSchema, "Update"),
     Auth,
-    checkPermission(["Admin"]),
-    adminCtrl.updateAdmin
+    checkPermission(["teams"]),
+    teamCtrl.updateTeam
   );
 
 router
   .route("/")
 
   /**
-   * GET /admin
-   * @tags ADMINs
+   * GET /team
+   * @tags TEAMs
    * @security JWT
-   * @summary Get list for superadmin
+   * @summary Get list for superteams
    * @param {string} search.query - Search
    * @param {number} page.query - 1 by default
    * @param {number} limit.query - 10 by default
@@ -77,14 +50,13 @@ router
   .get(
     validator.validateRequestQuery(commonSchema.listingSchema, "List"),
     Auth,
-    checkPermission(["Admin"]),
-
-    adminCtrl.getAdminListForSuperAdmin
+    checkPermission(["teams"]),
+    teamCtrl.getTeamListForAdmin
   )
 
   /**
    * Create
-   * @typedef {object} newAdminRequest
+   * @typedef {object} newteamsRequest
    * @property {string} fullName.required - fullName
    * @property {string} email.required - email
    * @property {number} contactNumber.required - contactNumber
@@ -92,32 +64,34 @@ router
    */
 
   /**
-   * POST /admin
-   * @tags ADMINs
+   * POST /team
+   * @tags TEAMs
    * @security JWT
    * @summary Create
-   * @param {newAdminRequest} request.body.required - details
+   * @param {newteamsRequest} request.body.required - details
    * @return {SuccessObjectResponse} 200 - Success
    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
    * @example request - example payload
    * {
    * "fullName": "John Doe",
-   * "email": "admin@getnada.com",
+   * "email": "teams@getnada.com",
    * "contactNumber": "9834567890",
+   * "category": "A",
+   * "image": "https://example.com/image.jpg"
    * }
    */
   .post(
-    // validator.validateRequestBody(adminSchema.createSchema, "Create"),
+    validator.validateRequestBody(teamSchema.createSchema, "Create"),
     Auth,
-    adminCtrl.addAdmin
+    teamCtrl.addTeam
   );
 
 router
   .route("/:id")
 
   /**
-   * GET /admin/{id}
-   * @tags ADMINs
+   * GET /team/{id}
+   * @tags TEAMs
    * @security JWT
    * @summary Get Details
    * @param {string} id.path - id (5e2583b17e234e3352723427)
@@ -127,38 +101,40 @@ router
   .get(
     validator.validateRequestParams(commonSchema.idSchema, "Get"),
     Auth,
-    checkPermission(["Admin"]),
-    adminCtrl.getAdminDetail
+    checkPermission(["teams"]),
+    teamCtrl.getTeamDetail
   )
 
   /**
-   * @typedef {object} UpdateAdminRequest
+   * @typedef {object} UpdateteamsRequest
    * @property {string} fullName.required - fullName
    * @property {number} contactNumber.required - contactNumber
    */
 
   /**
-   * PUT /admin/{id}
-   * @tags ADMINs
+   * PUT /team/{id}
+   * @tags TEAMs
    * @security JWT
    * @summary Update
    * @param {string} id.path - id (5e2583b17e234e3352723427)
-   * @param {UpdateAdminRequest} request.body.required - details
+   * @param {UpdateteamsRequest} request.body.required - details
    * @return {SuccessObjectResponse} 200 - Success
    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
    * @example request - example payload
    * {
    * "fullName": "John Doe",
-   * "contactNumber": 1234567890,
+   * "contactNumber": "9834567890",
+   * "category": "A",
+   * "image": "https://example.com/image.jpg"
    * }
    */
 
   .put(
     validator.validateRequestParams(commonSchema.idSchema, "Update"),
-    // validator.validateRequestBody(adminSchema.updateSchema, "Update"),
+    validator.validateRequestBody(teamSchema.updateSchema, "Update"),
     Auth,
-    checkPermission(["Admin"]),
-    adminCtrl.updateAdmin
+    checkPermission(["teams"]),
+    teamCtrl.updateTeam
   );
 
 module.exports = router;

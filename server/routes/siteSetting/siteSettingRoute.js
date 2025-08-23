@@ -2,8 +2,8 @@ const router = require("express").Router();
 const { Auth } = require("../../middlewares/Auth");
 const siteSettingCtrl = require("../../controllers/siteSetting/siteSettingController");
 const validator = require("../../validation/validator");
-const commonSchema = require("../../validation/schemas/commonSchema");
-const siteSettingSchema = require("../../validation/schemas/siteSettingSchema");
+const commonSchema = require("../../validation/schema/commonSchema");
+const siteSettingSchema = require("../../validation/schema/siteSettingSchema");
 const { checkPermission } = require("../../middlewares/Guard");
 
 router

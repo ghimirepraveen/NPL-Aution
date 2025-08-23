@@ -3,8 +3,8 @@ const router = express.Router();
 
 const emailtemplateCtrl = require("../../controllers/emailTemplate/emailTemplateController");
 const validator = require("../../validation/validator");
-const emailTemplateSchema = require("../../validation/schemas/emailTemplateSchema");
-const commonSchema = require("../../validation/schemas/commonSchema");
+const emailTemplateSchema = require("../../validation/schema/emailTemplateSchema");
+const commonSchema = require("../../validation/schema/commonSchema");
 const { Auth } = require("../../middlewares/Auth");
 const { checkPermission } = require("../../middlewares/Guard");
 

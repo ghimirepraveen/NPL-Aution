@@ -22,6 +22,10 @@ const port = normalizePort(process.env.API_PORT || "5000");
 app.set("port", port);
 
 const server = http.createServer(app);
+// Initialize socket.io after server is created
+const { Server } = require("socket.io");
+const io = new Server(server, { cors: { origin: "*" } });
+require("./server/socket/auctionSocket")(io);
 
 // Start server
 const startServer = async () => {
@@ -43,20 +47,6 @@ startServer();
 // Graceful shutdown
 process.on("SIGINT", async () => {
   console.log("Received SIGINT. Graceful shutdown...");
-
-  try {
-    server.close(() => {
-      console.log("HTTP server closed.");
-      process.exit(0);
-    });
-  } catch (error) {
-    console.error("Error during shutdown:", error);
-    process.exit(1);
-  }
-});
-
-process.on("SIGTERM", async () => {
-  console.log("Received SIGTERM. Graceful shutdown...");
 
   try {
     server.close(() => {

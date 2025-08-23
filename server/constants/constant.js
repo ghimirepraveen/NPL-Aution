@@ -186,45 +186,6 @@ const AUTH = {
   },
 };
 
-const CONTACTUS = {
-  CREATE_FAILED: {
-    TITLE: "Contact us",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "Contact us",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "Contact us",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "Contact us",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "Contact us",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "Contact us",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "Contact us",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "Contact us",
-    MESSAGE: "Successfully updated",
-  },
-};
-
 const EMAIL = {
   GET_FAILED: {
     TITLE: "Email",
@@ -311,45 +272,46 @@ const ADMIN = {
     MESSAGE: "Failed to get Stats",
   },
 };
-const USER = {
+
+const TEAM = {
   CREATE_FAILED: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Failed to add",
   },
 
   CREATE_SUCCESS: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Successfully created",
   },
 
   GET_FAILED: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Failed to get detail",
   },
 
   GET_SUCCESS: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Successfully got detail",
   },
   GET_FAILED_LIST: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Failed to get list",
   },
   GET_SUCCESS_LIST: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Successfully got list",
   },
   UPDATE_FAILED: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Failed to update",
   },
 
   UPDATE_SUCCESS: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Successfully updated",
   },
   EMAIL_ALREADY_TAKEN: {
-    TITLE: "User",
+    TITLE: "Team",
     MESSAGE: "Already Register",
     ERRORS: [
       {
@@ -358,14 +320,54 @@ const USER = {
       },
     ],
   },
+};
 
-  DONNER_SUCCESS: {
-    TITLE: "Donner",
+const PLAYER = {
+  CREATE_FAILED: {
+    TITLE: "Player",
+    MESSAGE: "Failed to add",
+  },
+
+  CREATE_SUCCESS: {
+    TITLE: "Player",
+    MESSAGE: "Successfully created",
+  },
+
+  GET_FAILED: {
+    TITLE: "Player",
+    MESSAGE: "Failed to get detail",
+  },
+
+  GET_SUCCESS: {
+    TITLE: "Player",
+    MESSAGE: "Successfully got detail",
+  },
+  GET_FAILED_LIST: {
+    TITLE: "Player",
+    MESSAGE: "Failed to get list",
+  },
+  GET_SUCCESS_LIST: {
+    TITLE: "Player",
     MESSAGE: "Successfully got list",
   },
-  DONNER_FAILED: {
-    TITLE: "Donner",
-    MESSAGE: "Failed to get list",
+  UPDATE_FAILED: {
+    TITLE: "Player",
+    MESSAGE: "Failed to update",
+  },
+
+  UPDATE_SUCCESS: {
+    TITLE: "Player",
+    MESSAGE: "Successfully updated",
+  },
+  EMAIL_ALREADY_TAKEN: {
+    TITLE: "Player",
+    MESSAGE: "Already Register",
+    ERRORS: [
+      {
+        key: ["email"],
+        message: ["Already Register"],
+      },
+    ],
   },
 };
 
@@ -380,244 +382,6 @@ const UPLOAD = {
   },
 };
 
-const ARTICAL = {
-  CREATE_FAILED: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Successfully updated",
-  },
-  FOR_SELECT_FAILED: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Failed to get detail",
-  },
-
-  FOR_SELECT_SUCESS: {
-    TITLE: "ARTICAL",
-    MESSAGE: "Successfully got detail",
-  },
-};
-
-const FAQ = {
-  CREATE_FAILED: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully updated",
-  },
-  FOR_SELECT_FAILED: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to get detail",
-  },
-
-  FOR_SELECT_SUCESS: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully got detail",
-  },
-};
-
-const GALLERY = {
-  CREATE_FAILED: {
-    TITLE: "Gallery",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "Gallery",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "Gallery",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "Gallery",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "Gallery",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "Gallery",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "Gallery",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "Gallery",
-    MESSAGE: "Successfully updated",
-  },
-  FOR_SELECT_FAILED: {
-    TITLE: "Gallery",
-    MESSAGE: "Failed to get detail",
-  },
-
-  FOR_SELECT_SUCESS: {
-    TITLE: "Gallery",
-    MESSAGE: "Successfully got detail",
-  },
-};
-const EVENT = {
-  CREATE_FAILED: {
-    TITLE: "Event",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "Event",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "Event",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "Event",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "Event",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "Event",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "Event",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "Event",
-    MESSAGE: "Successfully updated",
-  },
-  FOR_SELECT_FAILED: {
-    TITLE: "Event",
-    MESSAGE: "Failed to get detail",
-  },
-
-  FOR_SELECT_SUCESS: {
-    TITLE: "Event",
-    MESSAGE: "Successfully got detail",
-  },
-};
-
-const REQUEST = {
-  CREATE_FAILED: {
-    TITLE: "REQUEST",
-    MESSAGE: "Failed to add",
-  },
-
-  CREATE_SUCCESS: {
-    TITLE: "REQUEST",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "REQUEST",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "REQUEST",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "REQUEST",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "REQUEST",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "REQUEST",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "REQUEST",
-    MESSAGE: "Successfully updated",
-  },
-  FOR_SELECT_FAILED: {
-    TITLE: "REQUEST",
-    MESSAGE: "Failed to get detail",
-  },
-
-  FOR_SELECT_SUCESS: {
-    TITLE: "REQUEST",
-    MESSAGE: "Successfully got detail",
-  },
-};
 const SITESETTING = {
   ADD_FAILED: {
     TITLE: "Site Setting",
@@ -667,67 +431,16 @@ const SITESETTING = {
   },
 };
 
-const SLIDER = {
-  CREATE_FAILED: {
-    TITLE: "Slider",
-    MESSAGE: "Failed to add",
-  },
-  CREATE_SUCCESS: {
-    TITLE: "Slider",
-    MESSAGE: "Successfully created",
-  },
-
-  GET_FAILED: {
-    TITLE: "Slider",
-    MESSAGE: "Failed to get detail",
-  },
-
-  GET_SUCCESS: {
-    TITLE: "Slider",
-    MESSAGE: "Successfully got detail",
-  },
-  GET_FAILED_LIST: {
-    TITLE: "Slider",
-    MESSAGE: "Failed to get list",
-  },
-  GET_SUCCESS_LIST: {
-    TITLE: "Slider",
-    MESSAGE: "Successfully got list",
-  },
-  UPDATE_FAILED: {
-    TITLE: "Slider",
-    MESSAGE: "Failed to update",
-  },
-
-  UPDATE_SUCCESS: {
-    TITLE: "Slider",
-    MESSAGE: "Successfully updated",
-  },
-
-  DELETE_FAILED: {
-    TITLE: "Faq",
-    MESSAGE: "Failed to update",
-  },
-
-  DELETE_SUCCESS: {
-    TITLE: "Faq",
-    MESSAGE: "Successfully updated",
-  },
-};
-
 module.exports = {
   AUTH,
-  CONTACTUS,
+
   EMAIL,
   ADMIN,
-  USER,
+
   UPLOAD,
 
-  ARTICAL,
-  FAQ,
-  GALLERY,
-  EVENT,
-  REQUEST,
+  TEAM,
+  PLAYER,
+
   SITESETTING,
-  SLIDER,
 };

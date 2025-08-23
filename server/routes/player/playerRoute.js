@@ -1,64 +1,37 @@
 const router = require("express").Router();
 const { Auth } = require("../../middlewares/Auth");
-const adminCtrl = require("../../controllers/admin/adminController");
+const playerCtrl = require("../../controllers/player/playerController");
 const validator = require("../../validation/validator");
 const commonSchema = require("../../validation/schema/commonSchema");
-
+const playerSchema = require("../../validation/schema/playerSchema");
 const { checkPermission } = require("../../middlewares/Guard");
 
-/**
- * Error Response
- * @typedef {object} ErrorResponse
- * @property {string} title - title
- * @property {string} message - message
- */
+// router
+//   .route("/changestatus/:id")
 
-/**
- * Success Object Response
- * @typedef {object} SuccessObjectResponse
- * @property {string} title - title
- * @property {string} message - message
- * @property {object} data
- */
-/**
- * Success Array Response
- * @typedef {object} SuccessArrayResponse
- * @property {string} title - title
- * @property {string} message - message
- * @property {array<object>} data
- */
+//   /**
+//    * PUT /admin/changestatus/{id}
+//    * @tags ADMINs
+//    * @security JWT
+//    * @summary Change Status
+//    * @param {string} id.path - id (5e2583b17e234e3352723427)
+//    * @param {object} request.body.required - status
+//    * @return {SuccessObjectResponse} 200 - Success
+//    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
+//    * @example request - example payload
+//    * {
+//    * "status": "Blocked"
+//    * }
+//    */
 
-router
-  .route("/changestatus/:id")
-
-  /**
-   * @typedef {object} ChangeStatusRequest
-   * @property {string} status.required - status
-   */
-
-  /**
-   * PUT /admin/changestatus/{id}
-   * @tags ADMINs
-   * @security JWT
-   * @summary Change Status
-   * @param {string} id.path - id (5e2583b17e234e3352723427)
-   * @param {ChangeStatusRequest} request.body.required - status
-   * @return {SuccessObjectResponse} 200 - Success
-   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
-   * @example request - example payload
-   * {
-   * "status": "Blocked"
-   * }
-   */
-
-  .put(
-    Auth,
-    validator.validateRequestParams(commonSchema.idSchema, "Update"),
-    validator.validateRequestBody(commonSchema.changeStatusSchema, "Update"),
-    Auth,
-    checkPermission(["Admin"]),
-    adminCtrl.updateAdmin
-  );
+//   .put(
+//     Auth,
+//     validator.validateRequestParams(commonSchema.idSchema, "Update"),
+//     validator.validateRequestBody(commonSchema.changeStatusSchema, "Update"),
+//     Auth,
+//     checkPermission(["Admin"]),
+//     playerCtrl.updatePlayer
+//   );
 
 router
   .route("/")
@@ -78,8 +51,7 @@ router
     validator.validateRequestQuery(commonSchema.listingSchema, "List"),
     Auth,
     checkPermission(["Admin"]),
-
-    adminCtrl.getAdminListForSuperAdmin
+    playerCtrl.getPlayerListForAdmin
   )
 
   /**
@@ -104,12 +76,14 @@ router
    * "fullName": "John Doe",
    * "email": "admin@getnada.com",
    * "contactNumber": "9834567890",
+   * "category": "A",
+   * "image": "https://example.com/image.jpg"
    * }
    */
   .post(
-    // validator.validateRequestBody(adminSchema.createSchema, "Create"),
+    validator.validateRequestBody(playerSchema.createSchema, "Create"),
     Auth,
-    adminCtrl.addAdmin
+    playerCtrl.addPlayer
   );
 
 router
@@ -128,7 +102,7 @@ router
     validator.validateRequestParams(commonSchema.idSchema, "Get"),
     Auth,
     checkPermission(["Admin"]),
-    adminCtrl.getAdminDetail
+    playerCtrl.getPlayerDetail
   )
 
   /**
@@ -149,16 +123,18 @@ router
    * @example request - example payload
    * {
    * "fullName": "John Doe",
-   * "contactNumber": 1234567890,
+   * "contactNumber": "9834567890",
+   * "category": "A",
+   * "image": "https://example.com/image.jpg"
    * }
    */
 
   .put(
     validator.validateRequestParams(commonSchema.idSchema, "Update"),
-    // validator.validateRequestBody(adminSchema.updateSchema, "Update"),
+    validator.validateRequestBody(playerSchema.updateSchema, "Update"),
     Auth,
     checkPermission(["Admin"]),
-    adminCtrl.updateAdmin
+    playerCtrl.updatePlayer
   );
 
 module.exports = router;

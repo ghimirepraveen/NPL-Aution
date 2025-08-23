@@ -2,8 +2,8 @@ const router = require("express").Router();
 const { Auth } = require("../../middlewares/Auth");
 const userCtrl = require("../../controllers/user/userController");
 const validator = require("../../validation/validator");
-const commonSchema = require("../../validation/schemas/commonSchema");
-const userSchema = require("../../validation/schemas/userSchema");
+const commonSchema = require("../../validation/schema/commonSchema");
+const userSchema = require("../../validation/schema/userSchema");
 const { checkPermission } = require("../../middlewares/Guard");
 
 // router

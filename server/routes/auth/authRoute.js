@@ -1,34 +1,11 @@
 const express = require("express");
 const validator = require("../../validation/validator");
 
-const userSchema = require("../../validation/schemas/userSchema");
-const commonSchema = require("../../validation/schemas/commonSchema");
+const userSchema = require("../../validation/schema/userSchema");
+const commonSchema = require("../../validation/schema/commonSchema");
 const { Auth, logoutAuth } = require("../../middlewares/Auth");
 const authCtrl = require("../../controllers/auth/authController");
 const router = express.Router();
-
-router
-  .route("/change-available")
-
-  /**
-   * PUT /auth/change-available
-   * @tags AUTHs
-   * @security JWT
-   * @summary update
-   * @param {object} request.body.required - details
-   * @return {SuccessObjectResponse} 200 - Success
-   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
-   * @example request -  example payload
-   *  {
-   *  "isAvailable": true
-   * }
-   */
-
-  .put(
-    validator.validateRequestBody(userSchema.changeAvailable, "profile"),
-    Auth,
-    authCtrl.updateBasicProfile
-  );
 
 router
   .route("/resend-verification-mail")
