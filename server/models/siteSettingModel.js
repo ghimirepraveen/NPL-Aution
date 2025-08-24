@@ -46,7 +46,7 @@ const SiteSettingModel = new Schema({
     default: 0,
   },
 
-  baseBudgetForBCategoryPlayer: {
+  baseBudgetForCCategoryPlayer: {
     type: Number,
     default: 0,
   },

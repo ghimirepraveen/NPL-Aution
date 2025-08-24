@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const PlayerSchema = new Schema(
   {
     SN: {
-      type: String,
-      trim: true,
+      type: Number,
       required: true,
       unique: true,
     },
@@ -81,19 +80,14 @@ const PlayerSchema = new Schema(
       default: false,
     },
   },
-
   { timestamps: true }
 );
 
-PlayerSchema.pre("save", function (next) {
-  PlayerSchema.countDocuments({}, (err, count) => {
-    if (err) {
-      return next(err);
-    }
-
+PlayerSchema.pre("validate", async function () {
+  if (!this.SN) {
+    const count = await mongoose.model("Player").countDocuments();
     this.SN = count + 1;
-    next();
-  });
+  }
 });
 
 module.exports = mongoose.model("Player", PlayerSchema);

@@ -2,7 +2,7 @@ const GLOBALVARS = require("../../constants/globalConstant");
 const CONSTANTS = require("../../constants/constant");
 const resHelp = require("../../helpers/responseHelper");
 const filterHelp = require("../../helpers/filterHelper");
-const siteSettingOps = require("../siteSetting/siteSettingController");
+const siteSettingOps = require("../../operations/siteSetting/siteSettingOp");
 const playerOps = require("../../operations/player/playerOp");
 const authOps = require("../../operations/auths/authOp");
 const teamOps = require("../../operations/team/teamOp");
@@ -11,7 +11,7 @@ const emailTemplateHelp = require("../../helpers/emailTemplateHelper");
 
 const addPlayer = async (req, res, next) => {
   let data = req?.body;
-  let user = await authOps.findUserByEmail(data.email);
+  let user = await playerOps.findPlayerByEmail(data.email);
   if (user) {
     //ignoring user not found
     resHelp.respondError(
@@ -23,14 +23,23 @@ const addPlayer = async (req, res, next) => {
     );
   } else {
     const siteSetting = await siteSettingOps.getSiteSetting();
+    // if (siteSetting.maxBudgetForAPlayer === 0) {
+    //   resHelp.respondError(
+    //     res,
+    //     GLOBALVARS.errorStatusCode,
+    //     CONSTANTS.PLAYER.CREATE_FAILED.TITLE,
+    //     CONSTANTS.PLAYER.CREATE_FAILED.MESSAGE
+    //   );
+    // }
 
     if (data.category === "A") {
-      data.baseRate = siteSetting.baseBudgetForACategoryPlayer;
+      data.baseRate = siteSetting?.baseBudgetForACategoryPlayer || 20000;
     } else if (data.category === "B") {
-      data.baseRate = siteSetting.baseBudgetForBCategoryPlayer;
+      data.baseRate = siteSetting?.baseBudgetForBCategoryPlayer || 500000;
     } else if (data.category === "C") {
-      data.baseRate = siteSetting.baseBudgetForCCategoryPlayer;
+      data.baseRate = siteSetting?.baseBudgetForCCategoryPlayer || 1000000;
     }
+
     await playerOps
       .createPlayer(data)
       .then((result) => {

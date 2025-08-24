@@ -121,10 +121,15 @@ const updatePlayerDetailById = async (id, data) => {
 
   return result;
 };
+const findPlayerByEmail = async (email) => {
+  const result = await Player.findOne({ email });
+  return result;
+};
 
 module.exports = {
   allPlayers,
   createPlayer,
   getPlayerDetailById,
   updatePlayerDetailById,
+  findPlayerByEmail,
 };

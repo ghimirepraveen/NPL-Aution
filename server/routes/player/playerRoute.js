@@ -11,7 +11,7 @@ const { checkPermission } = require("../../middlewares/Guard");
 
 //   /**
 //    * PUT /admin/changestatus/{id}
-//    * @tags ADMINs
+//    * @tags Players
 //    * @security JWT
 //    * @summary Change Status
 //    * @param {string} id.path - id (5e2583b17e234e3352723427)
@@ -37,8 +37,8 @@ router
   .route("/")
 
   /**
-   * GET /admin
-   * @tags ADMINs
+   * GET /player
+   * @tags PLAYERs
    * @security JWT
    * @summary Get list for superadmin
    * @param {string} search.query - Search
@@ -64,8 +64,8 @@ router
    */
 
   /**
-   * POST /admin
-   * @tags ADMINs
+   * POST /player
+   * @tags PLAYERs
    * @security JWT
    * @summary Create
    * @param {newAdminRequest} request.body.required - details
@@ -90,8 +90,8 @@ router
   .route("/:id")
 
   /**
-   * GET /admin/{id}
-   * @tags ADMINs
+   * GET /player/{id}
+   * @tags PLAYERs
    * @security JWT
    * @summary Get Details
    * @param {string} id.path - id (5e2583b17e234e3352723427)
@@ -112,8 +112,8 @@ router
    */
 
   /**
-   * PUT /admin/{id}
-   * @tags ADMINs
+   * PUT /player/{id}
+   * @tags PLAYERs
    * @security JWT
    * @summary Update
    * @param {string} id.path - id (5e2583b17e234e3352723427)
