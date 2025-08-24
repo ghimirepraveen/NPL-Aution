@@ -1,6 +1,8 @@
 const Player = require("../models/playerModel");
 const Team = require("../models/userModel");
 
+//NOTHING IS DONE HERE JUST BASIC FILE FOR SOCKET
+
 module.exports = (io) => {
   console.log("Socket.io initialized");
   let currentPlayer = null;
