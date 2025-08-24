@@ -98,6 +98,13 @@ const UserSchema = new Schema(
       type: Number,
       default: 0,
     },
+
+    player: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Player",
+      },
+    ],
   },
 
   { timestamps: true }

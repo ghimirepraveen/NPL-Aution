@@ -3,9 +3,9 @@ const CONSTANTS = require("../../constants/constant");
 const resHelp = require("../../helpers/responseHelper");
 const filterHelp = require("../../helpers/filterHelper");
 
-const TeamOps = require("../../operations/team/teamOp");
+const teamOps = require("../../operations/team/teamOp");
 const authOps = require("../../operations/auths/authOp");
-
+const siteSettingOps = require("../../operations/siteSetting/siteSettingOp");
 const crypto = require("crypto");
 const SALT = process.env.PASSWORD_SALT;
 const ITERATIONS = parseInt(process.env.PASSWORD_ITERATIONS);
@@ -41,42 +41,57 @@ const addTeam = async (req, res, next) => {
     data.isEmailVerified = true;
 
     data.emailVerifyCode = await Math.floor(100000 + Math.random() * 900000);
-    await TeamOps.createTeam(data)
-      .then((result) => {
-        if (!result) {
-          resHelp.respondError(
-            res,
-            GLOBALVARS.errorStatusCode,
-            CONSTANTS.TEAM.CREATE_FAILED.TITLE,
-            CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
-          );
-        } else {
-          emailTemplateHelp.sendTemplateMail(
-            {
-              fullName: result.fullName,
-              email: data.email,
-              pass: pass,
-              emailVerifyCode: result.emailVerifyCode,
-            },
-            "register"
-          );
-          resHelp.respondSuccess(
-            res,
-            GLOBALVARS.successStatusCode,
-            CONSTANTS.TEAM.CREATE_SUCCESS.TITLE,
-            CONSTANTS.TEAM.CREATE_SUCCESS.MESSAGE,
-            result
-          );
-        }
-      })
-      .catch((e) => next(e));
+
+    const siteSetting = await siteSettingOps.getSiteSetting();
+    if (siteSetting.maxBudgetForATeam === 0) {
+      resHelp.respondError(
+        res,
+        GLOBALVARS.errorStatusCode,
+        CONSTANTS.TEAM.CREATE_FAILED.TITLE,
+        CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
+      );
+    } else {
+      data.budget = siteSetting.maxBudgetForATeam;
+      data.remainingBudget = siteSetting.maxBudgetForATeam;
+      await teamOps
+        .createTeam(data)
+        .then((result) => {
+          if (!result) {
+            resHelp.respondError(
+              res,
+              GLOBALVARS.errorStatusCode,
+              CONSTANTS.TEAM.CREATE_FAILED.TITLE,
+              CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
+            );
+          } else {
+            emailTemplateHelp.sendTemplateMail(
+              {
+                fullName: result.fullName,
+                email: data.email,
+                pass: pass,
+                emailVerifyCode: result.emailVerifyCode,
+              },
+              "register"
+            );
+            resHelp.respondSuccess(
+              res,
+              GLOBALVARS.successStatusCode,
+              CONSTANTS.TEAM.CREATE_SUCCESS.TITLE,
+              CONSTANTS.TEAM.CREATE_SUCCESS.MESSAGE,
+              result
+            );
+          }
+        })
+        .catch((e) => next(e));
+    }
   }
 };
 
 const getTeamListForAdmin = async (req, res, next) => {
   let filter = filterHelp.manageSortOption(req.query);
   filter.createdBy = req?.user?._id;
-  await TeamOps.allTeams(filter)
+  await teamOps
+    .allTeams(filter)
     .then((result) => {
       if (!result) {
         resHelp.respondError(
@@ -100,7 +115,8 @@ const getTeamListForAdmin = async (req, res, next) => {
 
 const getTeamDetail = async (req, res, next) => {
   let id = req?.params?.id;
-  await TeamOps.getTeamDetailById(id)
+  await teamOps
+    .getTeamDetailById(id)
     .then((result) => {
       if (!result) {
         resHelp.respondError(
@@ -126,7 +142,8 @@ const updateTeam = async (req, res, next) => {
   let data = req?.body;
   let id = req?.params?.id;
   data.updatedBy = req?.user?._id;
-  await TeamOps.updateTeamDetailById(id, data)
+  await teamOps
+    .updateTeamDetailById(id, data)
     .then((result) => {
       if (!result) {
         resHelp.respondError(
