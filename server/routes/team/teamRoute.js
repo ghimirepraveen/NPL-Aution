@@ -8,7 +8,6 @@ const { checkPermission } = require("../../middlewares/Guard");
 
 router
   .route("/changestatus/:id")
-
   /**
    * PUT /team/changestatus/{id}
    * @tags TEAMs
@@ -29,7 +28,7 @@ router
     validator.validateRequestParams(commonSchema.idSchema, "Update"),
     validator.validateRequestBody(commonSchema.changeStatusSchema, "Update"),
     Auth,
-    checkPermission(["teams"]),
+    checkPermission(["Admin"]),
     teamCtrl.updateTeam
   );
 
@@ -50,7 +49,7 @@ router
   .get(
     validator.validateRequestQuery(commonSchema.listingSchema, "List"),
     Auth,
-    checkPermission(["teams"]),
+    checkPermission(["Admin"]),
     teamCtrl.getTeamListForAdmin
   )
 
@@ -76,13 +75,13 @@ router
    * "fullName": "John Doe",
    * "email": "teams@getnada.com",
    * "contactNumber": "9834567890",
-   * "category": "A",
    * "image": "https://example.com/image.jpg"
    * }
    */
   .post(
     validator.validateRequestBody(teamSchema.createSchema, "Create"),
     Auth,
+    checkPermission(["Teams"]),
     teamCtrl.addTeam
   );
 
@@ -101,7 +100,7 @@ router
   .get(
     validator.validateRequestParams(commonSchema.idSchema, "Get"),
     Auth,
-    checkPermission(["teams"]),
+    checkPermission(["Teams"]),
     teamCtrl.getTeamDetail
   )
 
@@ -124,7 +123,6 @@ router
    * {
    * "fullName": "John Doe",
    * "contactNumber": "9834567890",
-   * "category": "A",
    * "image": "https://example.com/image.jpg"
    * }
    */
@@ -133,7 +131,7 @@ router
     validator.validateRequestParams(commonSchema.idSchema, "Update"),
     validator.validateRequestBody(teamSchema.updateSchema, "Update"),
     Auth,
-    checkPermission(["teams"]),
+    checkPermission(["Teams"]),
     teamCtrl.updateTeam
   );
 

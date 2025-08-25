@@ -43,49 +43,50 @@ const addTeam = async (req, res, next) => {
     data.emailVerifyCode = await Math.floor(100000 + Math.random() * 900000);
 
     const siteSetting = await siteSettingOps.getSiteSetting();
-    if (siteSetting.maxBudgetForATeam === 0) {
-      resHelp.respondError(
-        res,
-        GLOBALVARS.errorStatusCode,
-        CONSTANTS.TEAM.CREATE_FAILED.TITLE,
-        CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
-      );
-    } else {
-      data.budget = siteSetting.maxBudgetForATeam;
-      data.remainingBudget = siteSetting.maxBudgetForATeam;
-      await teamOps
-        .createTeam(data)
-        .then((result) => {
-          if (!result) {
-            resHelp.respondError(
-              res,
-              GLOBALVARS.errorStatusCode,
-              CONSTANTS.TEAM.CREATE_FAILED.TITLE,
-              CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
-            );
-          } else {
-            emailTemplateHelp.sendTemplateMail(
-              {
-                fullName: result.fullName,
-                email: data.email,
-                pass: pass,
-                emailVerifyCode: result.emailVerifyCode,
-              },
-              "register"
-            );
-            resHelp.respondSuccess(
-              res,
-              GLOBALVARS.successStatusCode,
-              CONSTANTS.TEAM.CREATE_SUCCESS.TITLE,
-              CONSTANTS.TEAM.CREATE_SUCCESS.MESSAGE,
-              result
-            );
-          }
-        })
-        .catch((e) => next(e));
-    }
+    // if (siteSetting?.maxBudgetForATeam === 0) {
+    //   resHelp.respondError(
+    //     res,
+    //     GLOBALVARS.errorStatusCode,
+    //     CONSTANTS.TEAM.CREATE_FAILED.TITLE,
+    //     CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
+    //   );
+    // } else {
+
+    data.budget = siteSetting?.maxBudgetForATeam || 100000;
+    data.remainingBudget = siteSetting?.maxBudgetForATeam || 100000;
+    await teamOps
+      .createTeam(data)
+      .then((result) => {
+        if (!result) {
+          resHelp.respondError(
+            res,
+            GLOBALVARS.errorStatusCode,
+            CONSTANTS.TEAM.CREATE_FAILED.TITLE,
+            CONSTANTS.TEAM.CREATE_FAILED.MESSAGE
+          );
+        } else {
+          emailTemplateHelp.sendTemplateMail(
+            {
+              fullName: result.fullName,
+              email: data.email,
+              pass: pass,
+              emailVerifyCode: result.emailVerifyCode,
+            },
+            "register"
+          );
+          resHelp.respondSuccess(
+            res,
+            GLOBALVARS.successStatusCode,
+            CONSTANTS.TEAM.CREATE_SUCCESS.TITLE,
+            CONSTANTS.TEAM.CREATE_SUCCESS.MESSAGE,
+            result
+          );
+        }
+      })
+      .catch((e) => next(e));
   }
 };
+//};
 
 const getTeamListForAdmin = async (req, res, next) => {
   let filter = filterHelp.manageSortOption(req.query);
