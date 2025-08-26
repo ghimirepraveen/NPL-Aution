@@ -7,6 +7,31 @@ const teamSchema = require("../../validation/schema/teamSchema");
 const { checkPermission } = require("../../middlewares/Guard");
 
 router
+  .route("/buy/:id")
+  /**
+   * PUT /team/buy/{id}
+   * @tags TEAMs
+   * @security JWT
+   * @summary Buy Player
+   * @param {string} id.path - id (5e2583b17e234e3352723427)
+   * @param {object} request.body.required - player
+   * @return {SuccessObjectResponse} 200 - Success
+   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
+   * @example request - example payload
+   * {
+   * "player": "5e2583b17e234e3352723427"
+   * }
+   */
+  .put(
+    Auth,
+    validator.validateRequestParams(commonSchema.idSchema, "Update"),
+    validator.validateRequestBody(commonSchema.buyPlayer, "Update"),
+    Auth,
+    checkPermission(["Admin"]),
+    teamCtrl.buyPlayerManually
+  );
+
+router
   .route("/changestatus/:id")
   /**
    * PUT /team/changestatus/{id}

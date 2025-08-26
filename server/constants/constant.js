@@ -359,6 +359,16 @@ const PLAYER = {
     TITLE: "Player",
     MESSAGE: "Successfully updated",
   },
+
+  BUY_PLAYER_FAILED: {
+    TITLE: "Player",
+    MESSAGE: "Failed to buy player",
+  },
+
+  BUY_PLAYER_SUCCESS: {
+    TITLE: "Player",
+    MESSAGE: "Successfully bought player",
+  },
   EMAIL_ALREADY_TAKEN: {
     TITLE: "Player",
     MESSAGE: "Already Register",

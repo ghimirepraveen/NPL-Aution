@@ -47,6 +47,7 @@ const PlayerSchema = new Schema(
       type: Number,
       default: 0,
     },
+
     currentBid: {
       type: Number,
       default: 0,
@@ -61,14 +62,6 @@ const PlayerSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-
-    bidLogs: [
-      {
-        team: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
-        price: Number,
-        time: { type: Date, default: Date.now },
-      },
-    ],
 
     isBidded: {
       type: Boolean,

@@ -49,6 +49,13 @@ const slugSchema = Joi.object().keys({
 const changeStatusSchema = Joi.object().keys({
   status: Joi.string().valid("Active", "Blocked").required().label("status"),
 });
+const buyPlayer = Joi.object().keys({
+  player: Joi.string().required().hex().length(24).messages({
+    "string.required": `Player ID is Required`,
+    "string.hex": `Not a valid Player ID`,
+    "string.length": `Not a valid Player ID`,
+  }),
+});
 
 module.exports = {
   idSchema,
@@ -56,4 +63,5 @@ module.exports = {
   slugSchema,
   idQuerySchema,
   changeStatusSchema,
+  buyPlayer,
 };

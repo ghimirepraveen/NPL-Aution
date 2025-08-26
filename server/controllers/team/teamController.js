@@ -13,6 +13,7 @@ const KEYLEN = parseInt(process.env.PASSWORD_KEYLEN);
 const ALGORITHM = process.env.PASSWORD_ALGORITHM;
 const HASHTYPE = process.env.PASSWORD_HASHTYPE;
 const emailTemplateHelp = require("../../helpers/emailTemplateHelper");
+const playerOps = require("../../operations/player/playerOp");
 
 const addTeam = async (req, res, next) => {
   let data = req?.body;
@@ -166,9 +167,93 @@ const updateTeam = async (req, res, next) => {
     .catch((e) => next(e));
 };
 
+const buyPlayerManually = async (req, res, next) => {
+  let data = req?.body;
+  let id = req?.params?.id;
+  data.updatedBy = req?.user?._id;
+
+  const siteSetting = await siteSettingOps.getSiteSetting();
+
+  if (req?.body?.player) {
+    data.$push = { player: req.body.player };
+  }
+
+  const playerData = await playerOps.getPlayerDetailById(req?.body?.player);
+
+  const teamData = await teamOps.getTeamDetailById(id);
+
+  let buyingPrice;
+
+  if (playerData.category === "A") {
+    buyingPrice = siteSetting?.maxBudgetForACategoryPlayer;
+  } else if (playerData.category === "B") {
+    buyingPrice = siteSetting?.maxBudgetForBCategoryPlayer;
+  } else if (playerData.category === "C") {
+    buyingPrice = siteSetting?.maxBudgetForCCategoryPlayer;
+  }
+
+  if (!teamData) {
+    return resHelp.respondError(
+      res,
+      GLOBALVARS.errorStatusCode,
+      CONSTANTS.TEAM.GET_FAILED.TITLE,
+      CONSTANTS.TEAM.GET_FAILED.MESSAGE
+    );
+  } else if (teamData?.remainingBudget < (playerData?.currentBid || 0)) {
+    return resHelp.respondError(
+      res,
+      GLOBALVARS.errorStatusCode,
+      CONSTANTS.TEAM.BUY_PLAYER_FAILED.TITLE,
+      CONSTANTS.TEAM.BUY_PLAYER_FAILED.MESSAGE
+    );
+  } else {
+    await teamOps
+      .updateTeamDetailById(id, data)
+      .then(async (result) => {
+        if (!result) {
+          resHelp.respondError(
+            res,
+            GLOBALVARS.errorStatusCode,
+            CONSTANTS.TEAM.BUY_PLAYER_FAILED.TITLE,
+            CONSTANTS.TEAM.BUY_PLAYER_FAILED.MESSAGE
+          );
+        } else {
+          await playerOps.updatePlayerDetailById(req?.body?.player, {
+            bidWinner: id,
+            isBidded: true,
+            currentBid: buyingPrice,
+          });
+
+          await teamOps.updateTeamDetailById(id, {
+            $inc: { remainingBudget: -buyingPrice || 0 },
+          });
+
+          await bidlogOps.createBidlog({
+            player: req?.body?.player,
+            team: id,
+            price: buyingPrice,
+            boughtBy: req?.user?._id,
+            increasedAmount: buyingPrice - (playerData.currentBid || 0),
+            message: `Player ${playerData.fullName} bought for ${buyingPrice} by team ${teamData.fullName}`,
+          });
+
+          resHelp.respondSuccess(
+            res,
+            GLOBALVARS.successStatusCode,
+            CONSTANTS.TEAM.BUY_PLAYER_SUCCESS.TITLE,
+            CONSTANTS.TEAM.BUY_PLAYER_SUCCESS.MESSAGE,
+            result
+          );
+        }
+      })
+      .catch((e) => next(e));
+  }
+};
+
 module.exports = {
   addTeam,
   getTeamListForAdmin,
   getTeamDetail,
   updateTeam,
+  buyPlayerManually,
 };
