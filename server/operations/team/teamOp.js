@@ -110,7 +110,31 @@ const createTeam = async (data) => {
 };
 
 const getTeamDetailById = async (id) => {
-  const result = await Team.findById(id);
+  const result = await Team.aggregate([
+    {
+      $match: {
+        _id: id,
+      },
+    },
+    {
+      $lookup: {
+        from: "players",
+        localField: "_id",
+        foreignField: "bidWinner",
+        pipeline: [
+          {
+            $project: {
+              fullName: 1,
+              image: 1,
+              bidWinningRate: 1,
+              category: 1,
+            },
+          },
+        ],
+        as: "players",
+      },
+    },
+  ]);
   return result;
 };
 

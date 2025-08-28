@@ -126,10 +126,18 @@ const findPlayerByEmail = async (email) => {
   return result;
 };
 
+const findListOfPlayerForaTeam = async (team) => {
+  const result = await Player.find({
+    bidWinner: team,
+  });
+  return result;
+};
+
 module.exports = {
   allPlayers,
   createPlayer,
   getPlayerDetailById,
   updatePlayerDetailById,
   findPlayerByEmail,
+  findListOfPlayerForaTeam,
 };

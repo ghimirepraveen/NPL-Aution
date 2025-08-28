@@ -50,6 +50,21 @@ const SiteSettingModel = new Schema({
     type: Number,
     default: 0,
   },
+
+  incrementBudgetForACategoryPlayer: {
+    type: Number,
+    default: 0,
+  },
+
+  incrementBudgetForBCategoryPlayer: {
+    type: Number,
+    default: 0,
+  },
+
+  incrementBudgetForCCategoryPlayer: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("SiteSetting", SiteSettingModel);

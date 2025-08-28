@@ -1,72 +1,150 @@
 const Player = require("../models/playerModel");
+const siteSettingModel = require("../models/siteSettingModel");
 const Team = require("../models/userModel");
-
-//NOTHING IS DONE HERE JUST BASIC FILE FOR SOCKET
+const BidLog = require("../models/bidLogModel");
 
 module.exports = (io) => {
   console.log("Socket.io initialized");
   let currentPlayer = null;
   let currentBid = 0;
+  let bidTimer = null;
 
-  io.on("connection", (socket) => {
-    console.log("Client connected:", socket.id);
+  const AUCTION_ROOM = "auction-room";
 
-    socket.on("start-bidding", async () => {
-      const players = await Player.find({ isSold: false });
-      if (!players.length) return io.emit("auction-over");
+  io.on("connection", async (socket) => {
+    const teams = await Team.find({ userType: "Team" });
+    teams.forEach((team) => {
+      if (String(team._id) === socket.handshake.query.teamId) {
+        socket.join(AUCTION_ROOM);
+        console.log(`Team ${team.name} joined ${AUCTION_ROOM}`);
 
-      currentPlayer = players[Math.floor(Math.random() * players.length)];
-      currentBid = currentPlayer.basePrice;
-
-      io.emit("new-player", currentPlayer);
+        io.to(AUCTION_ROOM).emit("team-joined", {
+          teamId: team._id,
+          teamName: team.name,
+        });
+      }
     });
 
-    socket.on("place-bid", async ({ teamId, bid }) => {
-      if (!currentPlayer) return;
-      const team = await Team.findById(teamId);
-      if (!team || team.budget < bid) return; // verify with keys //might need to use transaction
+    socket.on("start-bidding", async () => {
+      const players = await Player.find({ isBidded: false });
 
-      const maxLimit =
-        PLAYER_CATEGORIES[currentPlayer.category]?.limit || Infinity;
-      if (bid > currentBid && bid <= maxLimit) {
-        currentBid = bid;
-        currentPlayer.bidLogs.push({ team: team._id, price: bid });
-        await currentPlayer.save();
-        io.emit("new-bid", { team, bid });
+      if (!players.length) {
+        return io.to(AUCTION_ROOM).emit("auction-over");
+      } else {
+        currentPlayer = players[Math.floor(Math.random() * players.length)];
+        currentBid = currentPlayer.baseRate;
+
+        io.to(AUCTION_ROOM).emit("new-player", currentPlayer);
       }
+    });
+
+    socket.on("place-bid", async ({ teamId }) => {
+      if (!currentPlayer) return;
+
+      const siteSetting = await siteSettingModel.findOne({
+        slug: "site-setting",
+      });
+
+      let increment = 0;
+      if (currentPlayer.category === "A") {
+        increment = siteSetting.incrementBudgetForACategoryPlayer;
+      } else if (currentPlayer.category === "B") {
+        increment = siteSetting.incrementBudgetForBCategoryPlayer;
+      } else if (currentPlayer.category === "C") {
+        increment = siteSetting.incrementBudgetForCCategoryPlayer;
+      }
+
+      currentBid += increment;
+
+      const team = await Team.findById(teamId);
+      if (!team) return;
+
+      if (team.remainingBudget < currentBid) {
+        return io.to(AUCTION_ROOM).emit("bid-failed", {
+          team,
+          player: currentPlayer,
+          reason: "Insufficient budget",
+        });
+      }
+
+      const bidLog = await BidLog.create({
+        player: currentPlayer._id,
+        team: team._id,
+        price: currentBid,
+        message: `${team.name} placed a bid of ${currentBid}`,
+        increasedAmount: increment,
+      });
+
+      io.to(AUCTION_ROOM).emit("new-bid", {
+        team,
+        player: currentPlayer,
+        bid: bidLog,
+      });
+
+      if (bidTimer) clearTimeout(bidTimer);
+      bidTimer = setTimeout(async () => {
+        await finalizeAuction(io, currentPlayer._id);
+      }, 10000); //time dyanamic
     });
 
     socket.on("end-bidding", async () => {
-      if (!currentPlayer) return;
-
-      const logs = currentPlayer.bidLogs;
-      if (!logs.length) return io.emit("no-bid", currentPlayer);
-
-      const winnerLog = logs[logs.length - 1];
-      const team = await Team.findById(winnerLog.team);
-
-      if (team && team.budget >= winnerLog.price) {
-        team.budget -= winnerLog.price;
-        team.players.push({
-          player: currentPlayer._id,
-          price: winnerLog.price,
-        });
-        await team.save();
-
-        currentPlayer.isSold = true;
-        currentPlayer.soldTo = team._id;
-        currentPlayer.finalPrice = winnerLog.price;
-        await currentPlayer.save();
-
-        io.emit("bid-winner", {
-          player: currentPlayer,
-          team,
-          price: winnerLog.price,
-        });
-      }
-
-      currentPlayer = null;
-      currentBid = 0;
+      if (bidTimer) clearTimeout(bidTimer);
+      if (currentPlayer) await finalizeAuction(io, currentPlayer._id);
     });
   });
 };
+
+async function finalizeAuction(io, playerId) {
+  const AUCTION_ROOM = "auction-room";
+  const player = await Player.findById(playerId);
+  if (!player) return;
+
+  const lastBid = await BidLog.findOne({ player: player._id })
+    .sort({ createdAt: -1 })
+    .populate("team");
+
+  if (!lastBid) {
+    player.isBidded = true;
+    player.bidWinner = null;
+    player.bidWinningRate = 0;
+    await player.save();
+
+    io.to(AUCTION_ROOM).emit("unsold-player", player);
+    currentPlayer = null;
+    currentBid = 0;
+    return;
+  }
+
+  const team = lastBid.team;
+  if (!team) return;
+
+  if (team.remainingBudget >= lastBid.price) {
+    team.remainingBudget -= lastBid.price;
+    team.players.push({ player: player._id });
+    await team.save();
+
+    player.isBidded = true;
+    player.bidWinner = team._id;
+    player.bidWinningRate = lastBid.price;
+    await player.save();
+
+    io.to(AUCTION_ROOM).emit("bid-winner", {
+      player,
+      team,
+      price: lastBid.price,
+    });
+  } else {
+    player.isBidded = true;
+    player.bidWinner = null;
+    player.bidWinningRate = 0;
+    await player.save();
+
+    io.to(AUCTION_ROOM).emit("unsold-player", {
+      player,
+      reason: "Final bidder did not have enough budget",
+    });
+  }
+
+  currentPlayer = null;
+  currentBid = 0;
+}
