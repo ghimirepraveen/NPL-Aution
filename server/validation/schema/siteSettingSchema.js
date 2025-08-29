@@ -18,6 +18,19 @@ const siteSetting = Joi.object().keys({
     .min(0)
     .optional()
     .label("baseBudgetForBCategoryPlayer"),
+
+  incrementBudgetForCCategoryPlayer: Joi.number()
+    .min(0)
+    .optional()
+    .label("incrementBudgetForCCategoryPlayer"),
+  incrementBudgetForBCategoryPlayer: Joi.number()
+    .min(0)
+    .optional()
+    .label("incrementBudgetForBCategoryPlayer"),
+  incrementBudgetForACategoryPlayer: Joi.number()
+    .min(0)
+    .optional()
+    .label("incrementBudgetForACategoryPlayer"),
 });
 
 module.exports = {

@@ -1,4 +1,5 @@
 const Team = require("../../models/userModel");
+const mongoose = require("mongoose");
 
 const allTeams = async (filter) => {
   let queryArray = [
@@ -113,7 +114,7 @@ const getTeamDetailById = async (id) => {
   const result = await Team.aggregate([
     {
       $match: {
-        _id: id,
+        _id: new mongoose.Types.ObjectId(id),
       },
     },
     {
@@ -135,7 +136,7 @@ const getTeamDetailById = async (id) => {
       },
     },
   ]);
-  return result;
+  return result[0] || null;
 };
 
 const updateTeamDetailById = async (id, data) => {

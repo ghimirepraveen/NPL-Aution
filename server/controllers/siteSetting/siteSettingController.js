@@ -41,6 +41,7 @@ const getSiteSettingForAdmin = async (req, res, next) => {
           CONSTANTS.SITESETTING.GET_FAILED.MESSAGE
         );
       } else {
+        console.log(result);
         resHelp.respondSuccess(
           res,
           GLOBALVARS.successStatusCode,
@@ -65,6 +66,7 @@ const getSiteSetting = async (req, res, next) => {
           CONSTANTS.SITESETTING.GET_FAILED.MESSAGE
         );
       } else {
+        console.log(result);
         let newObj = result.toObject();
         resHelp.respondSuccess(
           res,
@@ -103,99 +105,9 @@ const updateSiteSetting = async (req, res, next) => {
     .catch((e) => next(e));
 };
 
-const updateAds = async (req, res, next) => {
-  // const adsKey = Object.keys(req?.body)[0];
-  // let obj = {};
-  // obj[`${adsKey}`] = req?.body[`${adsKey}`];
-  await siteSettingOps
-    .updateSiteSettingBySlug("site-setting", req?.body)
-    .then((siteSetting) => {
-      if (!siteSetting) {
-        resHelp.respondError(
-          res,
-          GLOBALVARS.errorStatusCode,
-          "Ads",
-          "Failed to update"
-        );
-      } else {
-        resHelp.respondSuccess(
-          res,
-          GLOBALVARS.successStatusCode,
-          "Ads",
-          "Successfully updated",
-          siteSetting
-        );
-      }
-    })
-    .catch((e) => next(e));
-};
-
-const updateSeoPage = async (req, res, next) => {
-  const data = req?.body;
-  const siteSettingDetail = await siteSettingOps.getSiteSettingForAdmin(
-    "site-setting"
-  );
-
-  const index = siteSettingDetail.seo.findIndex((x) => x.seoFor == data.seoFor);
-  if (index == -1) {
-    siteSettingDetail.seo = siteSettingDetail.seo.push(data);
-  } else {
-    siteSettingDetail.seo[index] = data;
-  }
-  await siteSettingOps
-    .updateSiteSettingBySlug("site-setting", siteSettingDetail)
-    .then((result) => {
-      if (!result) {
-        resHelp.respondError(
-          res,
-          GLOBALVARS.errorStatusCode,
-          CONSTANTS.SITESETTING.UPDATE_FAILED.TITLE,
-          CONSTANTS.SITESETTING.UPDATE_FAILED.MESSAGE
-        );
-      } else {
-        resHelp.respondSuccess(
-          res,
-          GLOBALVARS.successStatusCode,
-          CONSTANTS.SITESETTING.UPDATE_SUCCESS.TITLE,
-          CONSTANTS.SITESETTING.UPDATE_SUCCESS.MESSAGE,
-          result
-        );
-      }
-    })
-    .catch((e) => next(e));
-};
-
-const updateContactInfo = async (req, res, next) => {
-  let data = req?.body;
-  await siteSettingOps
-    .updateSiteSettingBySlug("site-setting", { contactInfo: data })
-    .then((result) => {
-      if (!result) {
-        resHelp.respondError(
-          res,
-          GLOBALVARS.errorStatusCode,
-          CONSTANTS.SITESETTING.UPDATE_FAILED.TITLE,
-          CONSTANTS.SITESETTING.UPDATE_FAILED.MESSAGE
-        );
-      } else {
-        resHelp.respondSuccess(
-          res,
-          GLOBALVARS.successStatusCode,
-          CONSTANTS.SITESETTING.UPDATE_SUCCESS.TITLE,
-          CONSTANTS.SITESETTING.UPDATE_SUCCESS.MESSAGE,
-          result
-        );
-      }
-    })
-    .catch((e) => next(e));
-};
-
 module.exports = {
   addSiteSetting,
   getSiteSettingForAdmin,
   getSiteSetting,
   updateSiteSetting,
-  updateAds,
-  updateSeoPage,
-  updateContactInfo,
 };

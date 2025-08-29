@@ -322,6 +322,18 @@ const TEAM = {
   },
 };
 
+const BIDLOG = {
+  GET_FAILED: {
+    TITLE: "BidLog",
+    MESSAGE: "Failed to get detail",
+  },
+
+  GET_SUCCESS: {
+    TITLE: "BidLog",
+    MESSAGE: "Successfully got detail",
+  },
+};
+
 const PLAYER = {
   CREATE_FAILED: {
     TITLE: "Player",
@@ -453,4 +465,5 @@ module.exports = {
   PLAYER,
 
   SITESETTING,
+  BIDLOG,
 };

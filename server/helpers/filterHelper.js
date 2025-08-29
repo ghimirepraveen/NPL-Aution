@@ -31,9 +31,8 @@ const manageSortOption = (options) => {
     options.endDate = endDate;
   }
 
-  options.artical =
-    options.artical?.split(",").map((x) => new mongoose.Types.ObjectId(x)) ||
-    [];
+  options.player =
+    options.player?.split(",").map((x) => new mongoose.Types.ObjectId(x)) || [];
 
   options.createdBy =
     options.createdBy?.split(",").map((x) => new mongoose.Types.ObjectId(x)) ||

@@ -1,4 +1,4 @@
-const Bidlog = require("../../models/bidlogModel");
+const Bidlog = require("../../models/bidLogModel");
 
 const allBidlogs = async (filter) => {
   let queryArray = [
@@ -12,93 +12,21 @@ const allBidlogs = async (filter) => {
         ],
       },
     },
-
-    {
-      $facet: {
-        pagination: [
-          { $count: "total" },
-          { $addFields: { page: parseInt(filter.page) } },
-          { $addFields: { limit: parseInt(filter.limit) } },
-          {
-            $addFields: {
-              perviousPage: {
-                $cond: {
-                  if: {
-                    $ne: [parseInt(filter.page), 1],
-                  },
-                  then: true,
-                  else: false,
-                },
-              },
-            },
-          },
-          {
-            $addFields: {
-              nextPage: {
-                $cond: {
-                  if: {
-                    $gt: [
-                      "$total",
-                      parseInt(filter.page) * parseInt(filter.limit),
-                    ],
-                  },
-                  then: true,
-                  else: false,
-                },
-              },
-            },
-          },
-        ],
-        docs: [
-          {
-            $sort: {
-              [filter.sort]: filter.dir,
-            },
-          },
-          {
-            $skip: (parseInt(filter.page) - 1) * parseInt(filter.limit),
-          },
-          {
-            $limit: parseInt(filter.limit),
-          },
-          // {
-          //   $project: {
-          //     userType: 1,
-          //     status: 1,
-          //     email: 1,
-          //     permission: 1,
-          //     fullName: 1,
-          //     contactNumber: 1,
-          //     createdAt: 1,
-          //   },
-          // },
-        ],
-      },
-    },
   ];
-  if (filter?.status?.length > 0) {
-    queryArray.unshift({
+
+  if (filter?.player) {
+    queryArray.push({
       $match: {
-        status: { $in: filter.status },
+        player: { $in: filter.player },
       },
     });
   }
+
   const result = await Bidlog.aggregate(queryArray)
     .allowDiskUse(true)
     .collation({ locale: "en" });
 
-  const desiredDocs = result[0].docs ? result[0].docs : [];
-  const pagination =
-    result[0].pagination && result[0].pagination[0] !== undefined
-      ? result[0].pagination[0]
-      : {
-          total: 0,
-          page: parseInt(filter.page),
-          limit: parseInt(filter.limit),
-          nextPage: false,
-          perviousPage: false,
-        };
-  return { pagination: pagination, docs: desiredDocs };
+  return result;
 };
 
 const createBidlog = async (data) => {

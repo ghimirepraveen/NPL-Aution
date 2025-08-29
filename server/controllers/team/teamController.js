@@ -128,6 +128,8 @@ const getTeamDetail = async (req, res, next) => {
           CONSTANTS.TEAM.GET_FAILED.MESSAGE
         );
       } else {
+        console.log("Team details fetched successfully");
+        console.log(result);
         resHelp.respondSuccess(
           res,
           GLOBALVARS.successStatusCode,

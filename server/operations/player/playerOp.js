@@ -133,6 +133,13 @@ const findListOfPlayerForaTeam = async (team) => {
   return result;
 };
 
+const getListOfPlayer = async () => {
+  const result = await Player.find({
+    isBidded: { $ne: true },
+  });
+  return result;
+};
+
 module.exports = {
   allPlayers,
   createPlayer,
@@ -140,4 +147,5 @@ module.exports = {
   updatePlayerDetailById,
   findPlayerByEmail,
   findListOfPlayerForaTeam,
+  getListOfPlayer,
 };

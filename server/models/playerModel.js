@@ -43,6 +43,7 @@ const PlayerSchema = new Schema(
       type: Number,
       default: 0,
     },
+
     maxRate: {
       type: Number,
       default: 0,

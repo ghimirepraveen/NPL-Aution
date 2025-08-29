@@ -34,6 +34,19 @@ const { checkPermission } = require("../../middlewares/Guard");
 //   );
 
 router
+  .route("/for-select")
+
+  /**
+   * GET /player/for-select
+   * @tags PLAYERs
+   * @security JWT
+   * @summary Get list of player to buy
+   * @return {SuccessArrayResponse} 200 - Success
+   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
+   */
+  .get(Auth, checkPermission(["Admin"]), playerCtrl.getPlayerListToBuy);
+
+router
   .route("/")
 
   /**

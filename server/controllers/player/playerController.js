@@ -122,6 +122,30 @@ const getPlayerDetail = async (req, res, next) => {
     .catch((e) => next(e));
 };
 
+const getPlayerListToBuy = async (req, res, next) => {
+  await playerOps
+    .getListOfPlayer()
+    .then((result) => {
+      if (!result) {
+        resHelp.respondError(
+          res,
+          GLOBALVARS.errorStatusCode,
+          CONSTANTS.PLAYER.GET_FAILED.TITLE,
+          CONSTANTS.PLAYER.GET_FAILED.MESSAGE
+        );
+      } else {
+        resHelp.respondSuccess(
+          res,
+          GLOBALVARS.successStatusCode,
+          CONSTANTS.PLAYER.GET_SUCCESS.TITLE,
+          CONSTANTS.PLAYER.GET_SUCCESS.MESSAGE,
+          result
+        );
+      }
+    })
+    .catch((e) => next(e));
+};
+
 const updatePlayer = async (req, res, next) => {
   let data = req?.body;
   let id = req?.params?.id;
@@ -208,4 +232,5 @@ module.exports = {
   getPlayerDetail,
   updatePlayer,
   addPlayerToATeam,
+  getPlayerListToBuy,
 };
