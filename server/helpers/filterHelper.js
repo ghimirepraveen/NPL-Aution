@@ -34,6 +34,9 @@ const manageSortOption = (options) => {
   options.player =
     options.player?.split(",").map((x) => new mongoose.Types.ObjectId(x)) || [];
 
+  options.teams =
+    options.teams?.split(",").map((x) => new mongoose.Types.ObjectId(x)) || [];
+
   options.createdBy =
     options.createdBy?.split(",").map((x) => new mongoose.Types.ObjectId(x)) ||
     [];

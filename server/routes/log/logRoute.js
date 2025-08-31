@@ -8,8 +8,8 @@ const { checkPermission } = require("../../middlewares/Guard");
 router
   .route("/for-public")
   /**
-   * GET /player/for-public
-   * @tags PLAYERs
+   * GET /bid-log/for-public
+   * @tags BIDLOGs
    * @security JWT
    * @summary Get list for superadmin
    * @param {string} player.query - id
@@ -24,8 +24,8 @@ router
 router
   .route("/")
   /**
-   * GET /player
-   * @tags PLAYERs
+   * GET /bid-log
+   * @tags BIDLOGs
    * @security JWT
    * @summary Get list for superadmin
    * @param {string} player.query - id

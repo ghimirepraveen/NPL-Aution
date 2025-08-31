@@ -34,6 +34,28 @@ const { checkPermission } = require("../../middlewares/Guard");
 //   );
 
 router
+  .route("/for-team")
+
+  /**
+   * GET /player/for-team
+   * @tags PLAYERs
+   * @security JWT
+   * @summary Get list for team
+   * @param {string} search.query - Search
+   * @param {number} page.query - 1 by default
+   * @param {number} limit.query - 10 by default
+   * @param {string} teams.query - team's ID
+   * @return {SuccessArrayResponse} 200 - Success
+   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
+   */
+  .get(
+    validator.validateRequestQuery(commonSchema.listingSchema, "List"),
+    Auth,
+    checkPermission(["Team"]),
+    playerCtrl.getPlayerListForTeam
+  );
+
+router
   .route("/for-select")
 
   /**
@@ -86,11 +108,21 @@ router
    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
    * @example request - example payload
    * {
-   * "fullName": "John Doe",
-   * "email": "admin@getnada.com",
-   * "contactNumber": "9834567890",
-   * "category": "A",
-   * "image": "https://example.com/image.jpg"
+   *   "fullName": "John Doe",
+   *   "email": "admin@getnada.com",
+   *   "contactNumber": "9834567890",
+   *   "category": "A",
+   *   "image": "https://example.com/image.jpg",
+   *   "playingStyle": "Batsman",
+   *   "battingStyle": "Right-Handed",
+   *   "bowlingStyle": "Right-Arm",
+   *   "bowlingType": "Pace",
+   *   "stats": {
+   *     "matches": 10,
+   *     "runs": 500,
+   *     "wickets": 15,
+   *     "catches": 7
+   *   }
    * }
    */
   .post(
@@ -114,7 +146,7 @@ router
   .get(
     validator.validateRequestParams(commonSchema.idSchema, "Get"),
     Auth,
-    checkPermission(["Admin"]),
+    checkPermission(["Admin", "Team"]),
     playerCtrl.getPlayerDetail
   )
 
@@ -135,10 +167,20 @@ router
    * @return {ErrorResponse} 422 - Unprocessable (invalid input)
    * @example request - example payload
    * {
-   * "fullName": "John Doe",
-   * "contactNumber": "9834567890",
-   * "category": "A",
-   * "image": "https://example.com/image.jpg"
+   *   "fullName": "John Doe",
+   *   "contactNumber": "9834567890",
+   *   "category": "A",
+   *   "image": "https://example.com/image.jpg",
+   *   "playingStyle": "Batsman",
+   *   "battingStyle": "Right-Handed",
+   *   "bowlingStyle": "Right-Arm",
+   *   "bowlingType": "Pace",
+   *   "stats": {
+   *     "matches": 10,
+   *     "runs": 500,
+   *     "wickets": 15,
+   *     "catches": 7
+   *   }
    * }
    */
 

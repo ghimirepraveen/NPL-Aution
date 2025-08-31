@@ -284,6 +284,26 @@ const TEAM = {
     MESSAGE: "Successfully created",
   },
 
+  BUY_PLAYER_FAILED: {
+    TITLE: "Team",
+    MESSAGE: "Failed to buy player",
+  },
+
+  BUY_PLAYER_SUCCESS: {
+    TITLE: "Team",
+    MESSAGE: "Successfully bought player",
+  },
+
+  BUY_PLAYER_ALREADY_BIDDED: {
+    TITLE: "Team",
+    MESSAGE: "Already Bidded",
+  },
+
+  BUY_PLAYER_SUCCESS: {
+    TITLE: "Team",
+    MESSAGE: "Successfully bought player",
+  },
+
   GET_FAILED: {
     TITLE: "Team",
     MESSAGE: "Failed to get detail",

@@ -10,16 +10,12 @@ const BidLogSchema = new Schema(
     },
     team: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Team",
+      ref: "User",
       required: true,
     },
     price: {
       type: Number,
       required: true,
-    },
-    time: {
-      type: Date,
-      default: Date.now,
     },
     message: {
       type: String,

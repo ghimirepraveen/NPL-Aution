@@ -5,11 +5,28 @@ const allBidlogs = async (filter) => {
     {
       $match: {
         isDeleted: { $ne: true },
-        $or: [
-          { uniCode: { $regex: filter?.search, $options: "si" } },
-          { contactNumber: { $regex: filter?.search, $options: "si" } },
-          { fullName: { $regex: filter?.search, $options: "si" } },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "team",
+        foreignField: "_id",
+        pipeline: [
+          {
+            $project: {
+              fullName: 1,
+            },
+          },
         ],
+        as: "team",
+      },
+    },
+    {
+      $unwind: {
+        path: "$team",
+        includeArrayIndex: "q",
+        preserveNullAndEmptyArrays: true,
       },
     },
   ];

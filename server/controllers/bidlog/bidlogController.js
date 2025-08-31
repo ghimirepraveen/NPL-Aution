@@ -2,7 +2,7 @@ const GLOBALVARS = require("../../constants/globalConstant");
 const CONSTANTS = require("../../constants/constant");
 const resHelp = require("../../helpers/responseHelper");
 const filterHelp = require("../../helpers/filterHelper");
-const bidlogOps = require("../../operations/bidlog/bidlogOps");
+const bidlogOps = require("../../operations/bidlog/bidlogOp");
 
 const getBidLogListForAdmin = async (req, res, next) => {
   let filter = filterHelp.manageSortOption(req.query);

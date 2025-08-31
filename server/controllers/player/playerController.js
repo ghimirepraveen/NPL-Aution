@@ -96,6 +96,31 @@ const getPlayerListForAdmin = async (req, res, next) => {
     })
     .catch((e) => next(e));
 };
+const getPlayerListForTeam = async (req, res, next) => {
+  let filter = filterHelp.manageSortOption(req.query);
+  filter.createdBy = req?.user?._id;
+  await playerOps
+    .allPlayersForTeam(filter)
+    .then((result) => {
+      if (!result) {
+        resHelp.respondError(
+          res,
+          GLOBALVARS.errorStatusCode,
+          CONSTANTS.PLAYER.GET_FAILED_LIST.TITLE,
+          CONSTANTS.PLAYER.GET_FAILED_LIST.MESSAGE
+        );
+      } else {
+        resHelp.respondSuccess(
+          res,
+          GLOBALVARS.successStatusCode,
+          CONSTANTS.PLAYER.GET_SUCCESS_LIST.TITLE,
+          CONSTANTS.PLAYER.GET_SUCCESS_LIST.MESSAGE,
+          result
+        );
+      }
+    })
+    .catch((e) => next(e));
+};
 
 const getPlayerDetail = async (req, res, next) => {
   let id = req?.params?.id;
@@ -233,4 +258,5 @@ module.exports = {
   updatePlayer,
   addPlayerToATeam,
   getPlayerListToBuy,
+  getPlayerListForTeam,
 };

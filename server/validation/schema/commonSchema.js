@@ -34,6 +34,7 @@ const listingSchema = Joi.object().keys({
   dir: Joi.string().optional().label("dir"),
   commentType: Joi.string().optional().label("commentType"),
   player: Joi.string().optional().label("player"),
+  teams: Joi.string().optional().label("teams"),
 
   min: Joi.number().optional().label("min"),
   max: Joi.number().optional().label("max"),

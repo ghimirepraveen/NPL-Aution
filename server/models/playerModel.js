@@ -16,6 +16,40 @@ const PlayerSchema = new Schema(
       lowercase: true,
     },
 
+    playingStyle: {
+      type: String,
+      trim: true,
+      enum: ["Batsman", "Bowler", "All-Rounder", "Wicket-Keeper"],
+    },
+
+    battingStyle: {
+      type: String,
+      trim: true,
+      enum: ["Right-Handed", "Left-Handed"],
+    },
+
+    bowlingStyle: {
+      type: String,
+      trim: true,
+      enum: ["Right-Arm", "Left-Arm"],
+    },
+
+    bowlingType: {
+      type: String,
+      trim: true,
+      enum: ["Pace", "Spin"],
+    },
+
+    stats: {
+      type: Object,
+      default: {
+        matches: 0,
+        runs: 0,
+        wickets: 0,
+        catches: 0,
+      },
+    },
+
     category: {
       type: String,
       trim: true,

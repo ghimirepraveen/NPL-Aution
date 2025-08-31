@@ -14,6 +14,7 @@ const ALGORITHM = process.env.PASSWORD_ALGORITHM;
 const HASHTYPE = process.env.PASSWORD_HASHTYPE;
 const emailTemplateHelp = require("../../helpers/emailTemplateHelper");
 const playerOps = require("../../operations/player/playerOp");
+const bidlogOps = require("../../operations/bidlog/bidlogOp");
 
 const addTeam = async (req, res, next) => {
   let data = req?.body;
@@ -176,9 +177,9 @@ const buyPlayerManually = async (req, res, next) => {
 
   const siteSetting = await siteSettingOps.getSiteSetting();
 
-  if (req?.body?.player) {
-    data.$push = { player: req.body.player };
-  }
+  // if (req?.body?.player) {
+  //   data.$push = { player: req.body.player };
+  // }
 
   const playerData = await playerOps.getPlayerDetailById(req?.body?.player);
 
@@ -202,11 +203,19 @@ const buyPlayerManually = async (req, res, next) => {
       CONSTANTS.TEAM.GET_FAILED.MESSAGE
     );
   } else if (teamData?.remainingBudget < (playerData?.currentBid || 0)) {
+    console.log("Insufficient budget");
     return resHelp.respondError(
       res,
       GLOBALVARS.errorStatusCode,
       CONSTANTS.TEAM.BUY_PLAYER_FAILED.TITLE,
       CONSTANTS.TEAM.BUY_PLAYER_FAILED.MESSAGE
+    );
+  } else if (playerData?.isBidded) {
+    return resHelp.respondError(
+      res,
+      GLOBALVARS.errorStatusCode,
+      CONSTANTS.TEAM.BUY_PLAYER_ALREADY_BIDDED.TITLE,
+      CONSTANTS.TEAM.BUY_PLAYER_ALREADY_BIDDED.MESSAGE
     );
   } else {
     await teamOps
@@ -220,6 +229,8 @@ const buyPlayerManually = async (req, res, next) => {
             CONSTANTS.TEAM.BUY_PLAYER_FAILED.MESSAGE
           );
         } else {
+          console.log("Buying price:", buyingPrice);
+
           await playerOps.updatePlayerDetailById(req?.body?.player, {
             bidWinner: id,
             isBidded: true,

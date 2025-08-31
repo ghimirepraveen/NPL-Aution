@@ -19,6 +19,11 @@ const siteSetting = Joi.object().keys({
     .optional()
     .label("baseBudgetForBCategoryPlayer"),
 
+  baseBudgetForCCategoryPlayer: Joi.number()
+    .min(0)
+    .optional()
+    .label("baseBudgetForCCategoryPlayer"),
+
   incrementBudgetForCCategoryPlayer: Joi.number()
     .min(0)
     .optional()
