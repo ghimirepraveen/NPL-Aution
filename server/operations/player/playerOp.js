@@ -244,6 +244,37 @@ const getListOfPlayer = async () => {
   return result;
 };
 
+const playerCount = async () => {
+  const result = await Player.countDocuments();
+  return result;
+};
+
+const bidedPlayerCount = async () => {
+  const result = await Player.countDocuments({ isBidded: true });
+  return result;
+};
+const unBidedPlayerCount = async () => {
+  const result = await Player.countDocuments({ isBidded: false });
+  return result;
+};
+
+const totalAmountSentToPlayers = async () => {
+  const result = await Player.aggregate([
+    {
+      $match: {
+        isBidded: true,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: "$bidWinningRate" },
+      },
+    },
+  ]);
+  return result[0]?.total || 0;
+};
+
 module.exports = {
   allPlayers,
   createPlayer,
@@ -253,4 +284,8 @@ module.exports = {
   findListOfPlayerForaTeam,
   getListOfPlayer,
   allPlayersForTeam,
+  totalAmountSentToPlayers,
+  playerCount,
+  bidedPlayerCount,
+  unBidedPlayerCount,
 };

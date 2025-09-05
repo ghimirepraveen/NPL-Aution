@@ -5,6 +5,8 @@ const filterHelp = require("../../helpers/filterHelper");
 
 const adminOps = require("../../operations/admin/adminOp");
 const authOps = require("../../operations/auths/authOp");
+const playerOps = require("../../operations/player/playerOp");
+const teamOps = require("../../operations/team/teamOp");
 
 const userOps = require("../../operations/users/userOp");
 
@@ -154,10 +156,36 @@ const updateAdmin = async (req, res, next) => {
     })
     .catch((e) => next(e));
 };
+const dashboardData = async (req, res, next) => {
+  await Promise.all([
+    playerOps.playerCount(),
+    playerOps.bidedPlayerCount(),
+    playerOps.unBidedPlayerCount(),
+    playerOps.totalAmountSentToPlayers(),
+    teamOps.teamCount(),
+  ])
+    .then((result) => {
+      resHelp.respondSuccess(
+        res,
+        GLOBALVARS.successStatusCode,
+        CONSTANTS.ADMIN.GET_SUCCESS.TITLE,
+        CONSTANTS.ADMIN.GET_SUCCESS.MESSAGE,
+        {
+          playerCount: result[0],
+          bidedPlayerCount: result[1],
+          unBidedPlayerCount: result[2],
+          totalAmountSentToPlayers: result[3],
+          teamCount: result[4],
+        }
+      );
+    })
+    .catch((e) => next(e));
+};
 
 module.exports = {
   addAdmin,
   getAdminListForSuperAdmin,
   getAdminDetail,
   updateAdmin,
+  dashboardData,
 };

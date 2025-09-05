@@ -29,6 +29,24 @@ const { checkPermission } = require("../../middlewares/Guard");
  */
 
 router
+  .route("/dashboard")
+
+  /**
+   * GET /admin/dashboard
+   * @tags ADMINs
+   * @security JWT
+   * @summary Get dashboard data
+   * @return {SuccessObjectResponse} 200 - Success
+   * @return {ErrorResponse} 422 - Unprocessable (invalid input)
+   */
+  .get(
+    Auth,
+    checkPermission(["Admin"]),
+
+    adminCtrl.dashboardData
+  );
+
+router
   .route("/changestatus/:id")
 
   /**

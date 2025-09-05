@@ -148,9 +148,15 @@ const updateTeamDetailById = async (id, data) => {
   return result;
 };
 
+const teamCount = async () => {
+  const result = await Team.countDocuments({ userType: "Team" });
+  return result;
+};
+
 module.exports = {
   allTeams,
   createTeam,
   getTeamDetailById,
+  teamCount,
   updateTeamDetailById,
 };
