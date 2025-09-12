@@ -1,7 +1,7 @@
 {
-  "name": "redis-platform",
+  "name": "npl-auction",
   "version": "1.0.0",
-  "description": "Redis-based platform with caching capabilities",
+  "description": "Nepal Primer league Auction Platform",
   "main": "index.js",
   "scripts": {
     "start": "node --env-file .env index.js",
@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.456.0",
-    "@aws-sdk/s3-request-presigner": "^3.787.0",
     "express": "^4.18.2",
     "hbs": "^4.2.0",
     "joi": "^17.11.0",
