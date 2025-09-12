@@ -112,26 +112,28 @@ Logs stored in:
 
 ## 📂 Project Structure
 
+```text
 NPL-Aution/
 ├── server/
-│ ├── config/ # Express, database, and other
-│ ├── controllers/ # Route controllers (admin, team player, etc.)
-│ ├── helpers/ # Utility/helper functions (e.g., uploadHelper.js)
-│ ├── middlewares/ # Express middlewares (auth, guard, etc.)
-│ ├── models/ # Mongoose models (playerModel.js, userModel.js, etc.)
-│ ├── operations/ # Business logic modules (teamOps.js, playerOps.js, etc.)
-│ ├── routes/ # Express route definitions
-│ ├── services/ # External services (mailer, AWS, etc.)
-│ ├── socket/ # Socket.io logic (auctionSocket.js)
-│ └── validation/ # Joi schemas and validators
-├── uploads/ # Uploaded files (images, docs, etc.)
-├── logs/ # Log files (organized by year/month/day)
-├── nginx/ # Nginx config files (if used)
-├── docker-compose.yml # Docker Compose setup
-├── dockerfile # Dockerfile for containerization
-├── env.example # Example environment variables
-├── package.json # Node.js dependencies and scripts
-└── README.md # Project documentation
+│   ├── config/         # Express, database, and other configs
+│   ├── controllers/    # Route controllers (admin, team, player, etc.)
+│   ├── helpers/        # Utility/helper functions (e.g., uploadHelper.js)
+│   ├── middlewares/    # Express middlewares (auth, guard, etc.)
+│   ├── models/         # Mongoose models (playerModel.js, userModel.js, etc.)
+│   ├── operations/     # Business logic modules (teamOps.js, playerOps.js, etc.)
+│   ├── routes/         # Express route definitions
+│   ├── services/       # External services (mailer, AWS, etc.)
+│   ├── socket/         # Socket.io logic (auctionSocket.js)
+│   └── validation/     # Joi schemas and validators
+├── uploads/            # Uploaded files (images, docs, etc.)
+├── logs/               # Log files (organized by year/month/day)
+├── nginx/              # Nginx config files (if used)
+├── docker-compose.yml  # Docker Compose setup
+├── dockerfile          # Dockerfile for containerization
+├── env.example         # Example environment variables
+├── package.json        # Node.js dependencies and scripts
+└── README.md           # Project documentation
+```
 
 ## 🌍 Vision
 
