@@ -84,7 +84,7 @@ function uploadMulter(req, res, next) {
         "File uploaded",
         {
           filename: req.file.filename,
-          path: req.file.path,
+          path: `${process.env.API_HOST || ""}/uploads/${req.file.filename}`,
         }
       );
     } catch (e) {
